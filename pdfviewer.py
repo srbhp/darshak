@@ -297,6 +297,9 @@ class Pdf_Widget(QtWidgets.QMainWindow):
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
+    os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
+    app.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
+    app.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True) #use highdpi icons
     w = Pdf_Widget("sample.pdf")
     w.show()
     sys.exit(app.exec_())
