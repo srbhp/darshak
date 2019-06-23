@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import popplerqt5
 import time
+import os 
 import sys
 from fixedARLabel import ThumbWidget
 import threadedRender as threaded
@@ -59,7 +60,8 @@ class Ui_MainWindow(object):
         self.thumbArea.setWidgetResizable(True)
         self.thumbArea.setWidget(self.thumbWidget)
         self.thumbArea.setMaximumWidth(500)
-
+        self.pbar = QtWidgets.QProgressBar()
+        self.mainPdfLayout.addWidget(self.pbar) 
         #self.fullLayout.addWidget(self.thumbArea)
         #self.fullLayout.addWidget(self.area)
 
@@ -95,11 +97,14 @@ class Ui_MainWindow(object):
 class Pdf_Widget(QtWidgets.QMainWindow):
     resized = QtCore.pyqtSignal()
     scrollSignal = QtCore.pyqtSignal()
+
     def  __init__(self, filename, defaultScale=2.75, parent=None):
         super(Pdf_Widget, self).__init__(parent=parent)
         self.ui = Ui_MainWindow(filename)
         self.ui.setupUi(self)
+        
         self.numpages=self.ui.doc.numPages()
+        self.ui.pbar.setMaximum( self.numpages)
         self.resized.connect( self.reRender)
         self.defaultScale = defaultScale
         self.rescaleToWidth=True
@@ -274,14 +279,20 @@ class Pdf_Widget(QtWidgets.QMainWindow):
         fake_dpi= tscale*self.physicalDpiX()
 
         worker =threaded.GetAllPage(self.ui.doc,fake_dpi,self.rescaleToWidth)
+        self.workingState = -1 
         self.threadpool.start( worker )
         worker.signals.finished.connect(self.add_qlabel )
+        worker.signals.starting.connect(self.annimateProgressBar )
+    def annimateProgressBar(self,page):
+        self.ui.pbar.setValue(page+1)
+
     def closeEvent(self, *args, **kwargs):
         self._closing = True
         self.threadpool.waitForDone()
 
 
     def add_qlabel(self,tlabel):
+        self.ui.pbar.hide() 
         xlayout = self.ui.pdfwidget.layout()
         if xlayout is not None:
             QtWidgets.QWidget().setLayout(xlayout)

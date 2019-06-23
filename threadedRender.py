@@ -2,6 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from fixedARLabel import  ImageWidget
 
 class WorkerSignals(QtCore.QObject):
+    starting = QtCore.pyqtSignal(int )
     finished = QtCore.pyqtSignal(object)
 
 class GetAllPage(QtCore.QRunnable):
@@ -22,6 +23,7 @@ class GetAllPage(QtCore.QRunnable):
             for i in range(self.numpages ):
                 self.label.append( QtWidgets.QLabel() )
     def _get_page(self ):
+        print('Starting render')
         for i in range(self.numpages ):
             page = self.docpages.page(i)
             image = page.renderToImage(self.fake_dpi,self.fake_dpi)
@@ -31,7 +33,9 @@ class GetAllPage(QtCore.QRunnable):
                 self.label[i].setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding )
                 self.label[i].setScaledContents(True)
 
+            self.signals.starting.emit(i)
             self.layout.addWidget(self.label[i],1)
+        print('End render')
     def run(self):
         self._get_page()
         self.signals.finished.emit(self.layout)
