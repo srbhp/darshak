@@ -1,41 +1,48 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from fixedARLabel import  ImageWidget
+from fixedARLabel import ImageWidget
+
 
 class WorkerSignals(QtCore.QObject):
-    starting = QtCore.pyqtSignal(int )
+    starting = QtCore.pyqtSignal(int)
     finished = QtCore.pyqtSignal(object)
 
+
 class GetAllPage(QtCore.QRunnable):
-    def __init__(self, docpages,fake_dpi,keepAR=False):
+    def __init__(self, docpages, fake_dpi, keepAR=False):
         super(GetAllPage, self).__init__()
         self.signals = WorkerSignals()
         self.docpages = docpages
         self.fake_dpi = fake_dpi
-        self.keepAR=keepAR
+        self.keepAR = keepAR
         self.layout = QtWidgets.QVBoxLayout()
-        self.numpages= self.docpages.numPages()
-        self.label= []
-        self.keepAR=keepAR
-        if (self.keepAR):
-            for i in range(self.numpages ):
-                self.label.append( ImageWidget() )
-        else :
-            for i in range(self.numpages ):
-                self.label.append( QtWidgets.QLabel() )
-    def _get_page(self ):
-        print('Starting render')
-        for i in range(self.numpages ):
+        self.numpages = self.docpages.numPages()
+        self.label = []
+        self.keepAR = keepAR
+        if self.keepAR:
+            for i in range(self.numpages):
+                self.label.append(ImageWidget())
+        else:
+            for i in range(self.numpages):
+                self.label.append(QtWidgets.QLabel())
+
+    def _get_page(self):
+        print("Starting render")
+        for i in range(self.numpages):
             page = self.docpages.page(i)
-            image = page.renderToImage(self.fake_dpi,self.fake_dpi)
-            pixmap=QtGui.QPixmap.fromImage(image)
+            image = page.renderToImage(self.fake_dpi, self.fake_dpi)
+            pixmap = QtGui.QPixmap.fromImage(image)
+            # pixmap=QtGui.QPixmap.fromImage(image)
             self.label[i].setPixmap(pixmap)
             if not self.keepAR:
-                self.label[i].setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding )
+                self.label[i].setSizePolicy(
+                    QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding
+                )
                 self.label[i].setScaledContents(True)
 
             self.signals.starting.emit(i)
-            self.layout.addWidget(self.label[i],1)
-        print('End render')
+            self.layout.addWidget(self.label[i], 1)
+        print("End render")
+
     def run(self):
         self._get_page()
         self.signals.finished.emit(self.layout)
