@@ -1,5 +1,6 @@
 from PyQt5 import QtCore,  QtWidgets
 import popplerqt5
+import time
 import os
 import sys
 from fixedARLabel import ThumbWidget
@@ -17,13 +18,13 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
         self.pdfwidget = QtWidgets.QWidget()
-        # self.layout = QtWidgets.QVBoxLayout()
-        # self.pdfwidget.setLayout( s)
+        #self.layout = QtWidgets.QVBoxLayout()
+        #self.pdfwidget.setLayout( s)
         # QtWidgets.QScrollArea(cwidget)
         self.current_width = float(MainWindow.width())
-        # dpi = MainWindow.physicalDpiX()
-        # //*central.height()/sizeObject.height()
+        dpi = MainWindow.physicalDpiX()  # //*central.height()/sizeObject.height()
         self.doc = popplerqt5.Poppler.Document.load(self.filename)
         # doc.setRenderBackend(popplerqt5.Poppler.Document.ArthurBackend)
         self.doc.setRenderHint(popplerqt5.Poppler.Document.Antialiasing)
@@ -35,9 +36,11 @@ class Ui_MainWindow(object):
         self.fullLayout = QtWidgets.QHBoxLayout()
         self.fullLayout.setContentsMargins(0, 0, 0, 0)
         self.centralwidget.setLayout(self.fullLayout)
+
         self.area = QtWidgets.QScrollArea()
         self.area.setWidgetResizable(True)
         self.area.setWidget(self.pdfwidget)
+
         self.mainPdfWidget = QtWidgets.QWidget()
         self.mainPdfLayout = QtWidgets.QVBoxLayout()
         self.mainPdfLayout.setSpacing(0)
@@ -46,6 +49,7 @@ class Ui_MainWindow(object):
         self.controlLayout = QtWidgets.QHBoxLayout()
         self.controlLayout.setContentsMargins(0, 0, 0, 0)
         self.controlWidget.setLayout(self.controlLayout)
+
         self.mainPdfWidget.setLayout(self.mainPdfLayout)
         self.mainPdfLayout.addWidget(self.controlWidget)
         self.mainPdfLayout.addWidget(self.area)
@@ -59,6 +63,7 @@ class Ui_MainWindow(object):
         self.mainPdfLayout.addWidget(self.pbar)
         # self.fullLayout.addWidget(self.thumbArea)
         # self.fullLayout.addWidget(self.area)
+
         self.splitter = QtWidgets.QSplitter(QtCore.Qt.Horizontal)
         self.splitter.addWidget(self.thumbArea)
         self.splitter.addWidget(self.mainPdfWidget)  # self.area)
@@ -67,6 +72,7 @@ class Ui_MainWindow(object):
             [self.splitter.height()*0.05, self.splitter.height()*0.95])
         self.splitter.setStyleSheet("QSplitter::handle { image: none; }")
         MainWindow.setCentralWidget(self.centralwidget)
+
         """
         for i in range(numpages):
             page = self.doc.page(i)
@@ -75,11 +81,11 @@ class Ui_MainWindow(object):
             label = QtWidgets.QLabel()
             label.setPixmap(pixmap)
             label.setScaledContents(True)
-            label.setSizePolicy(QtWidgets.QSizePolicy.Fixed,
-            QtWidgets.QSizePolicy.Expanding)
+            label.setSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding )
             self.layout.addWidget(label)
             self.layout.addStretch(1)
         """
+
         # area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         # area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         # area.setWindowTitle(filename)
@@ -155,7 +161,7 @@ class Pdf_Widget(QtWidgets.QMainWindow):
         self.sliderBar2.setValue(pos.y()*factor)
 
     def SyncScroll(self):
-        # sliderValue = self.sliderBar2.value()
+        sliderValue = self.sliderBar2.value()
         if (self.sliderBar2.maximum() == 0):
             curpage = 1
         else:
