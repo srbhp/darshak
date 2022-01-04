@@ -1,10 +1,14 @@
 # darshak
 Yet another pdf viewer 
 
-## Usage: 
+### Usage: 
 darshak.py <filename\>
 
-## Screenshot 
+### Screenshot 
 
 ![demonstration pic](https://github.com/srbhp/solid-potato/raw/master/darshak.png)
 
+### TODO:
+[ ] add support to annotate
+
+[ ] Select Image from the viewer

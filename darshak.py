@@ -314,16 +314,20 @@ class Pdf_Widget(QtWidgets.QMainWindow):
 usage = "Usage: darshak.py <filename>"
 
 if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)
+    os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
+    app.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
+    # use highdpi icons
+    app.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
     if len(sys.argv) > 1:
-        app = QtWidgets.QApplication(sys.argv)
-        os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
-        app.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
-        # use highdpi icons
-        app.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
         filename = sys.argv[1]
-        w = Pdf_Widget(filename)
-        w.show()
-        sys.exit(app.exec_())
     else:
         # Ask for filename or open a file choser
+        #
         print(usage)
+        filename = QtWidgets.QFileDialog.getOpenFileName(
+            None, "Open PDF", "", "PDF files (*.pdf)")[0]
+        print(filename)
+    w = Pdf_Widget(filename)
+    w.show()
+    sys.exit(app.exec_())
