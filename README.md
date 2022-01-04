@@ -1,4 +1,7 @@
 # solid-potato
-Yet another pdfviewer 
+Yet another pdf viewer
 
-![demonstration pic](https://github.com/srbhp/solid-potato/raw/master/solid-potato.png)
+# Usage: 
+darshak.py <filename>
+
+[demonstration pic](https://github.com/srbhp/solid-potato/raw/master/solid-potato.png)
