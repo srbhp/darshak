@@ -1,2 +1,2 @@
 PyQt5
-popplerqt5 
+python-poppler-qt5 
