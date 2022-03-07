@@ -1,14 +1,13 @@
 #!/usr/bin/python3
 
-from PyQt5 import QtCore,  QtWidgets
+from PyQt5 import QtCore, QtWidgets
 import popplerqt5
-import os
-import sys
 from fixedARLabel import ThumbWidget
 import threadedRender as threaded
 
 
 class Ui_MainWindow(object):
+
     def __init__(self, filename, parent=None):
         self.filename = filename
 
@@ -66,7 +65,8 @@ class Ui_MainWindow(object):
         self.splitter.addWidget(self.mainPdfWidget)  # self.area)
         self.fullLayout.addWidget(self.splitter)
         self.splitter.setSizes(
-            [self.splitter.height()*0.05, self.splitter.height()*0.95])
+            [self.splitter.height() * 0.05,
+             self.splitter.height() * 0.95])
         self.splitter.setStyleSheet("QSplitter::handle { image: none; }")
         MainWindow.setCentralWidget(self.centralwidget)
         """
@@ -142,7 +142,7 @@ class Pdf_Widget(QtWidgets.QMainWindow):
     def goToPage(self):
         try:
             gopage = int(self.statusPageNo.text()) - 1  # Added 1 earlier
-            loc = self.ui.pdfwidget.height()*gopage/self.numpages
+            loc = self.ui.pdfwidget.height() * gopage / self.numpages
             self.sliderBar2.setValue(loc)
         except:
             print("Unable to go to page : \n Please eneter correct page ")
@@ -152,23 +152,24 @@ class Pdf_Widget(QtWidgets.QMainWindow):
         hide_me.setHidden(not hide_me.isHidden())
 
     def thubmClick(self, pos):
-        print((self.sliderBar1.maximum(), 1.*self.sliderBar2.maximum()))
-        factor = self.ui.pdfwidget.height()/(1.*self.ui.thumbWidget.height())
-        self.sliderBar2.setValue(pos.y()*factor)
+        print((self.sliderBar1.maximum(), 1. * self.sliderBar2.maximum()))
+        factor = self.ui.pdfwidget.height() / (1. *
+                                               self.ui.thumbWidget.height())
+        self.sliderBar2.setValue(pos.y() * factor)
 
     def SyncScroll(self):
         # sliderValue = self.sliderBar2.value()
         if (self.sliderBar2.maximum() == 0):
             curpage = 1
         else:
-            curpage = int(self.numpages*(self.sliderBar2.value()) /
-                          self.sliderBar2.maximum()-0.1)+1
+            curpage = int(self.numpages * (self.sliderBar2.value()) /
+                          self.sliderBar2.maximum() - 0.1) + 1
         self.statusPageNo.setText("{}".format(curpage))
         # self.sliderBar1.setValue(sliderValue)
 
     def getthumbnails(self):
         scalefactor = 0.5
-        fake_dpi = scalefactor*self.physicalDpiX()
+        fake_dpi = scalefactor * self.physicalDpiX()
 
         worker = threaded.GetAllPage(self.ui.doc, fake_dpi, True)
         self.threadpool.start(worker)
@@ -197,6 +198,7 @@ class Pdf_Widget(QtWidgets.QMainWindow):
         if index == 6:
             self.rescaleToWidth = False
             self.renderFirstpapge(8.)
+
     """
     def wheelEvent(self, event):
         if (  self.renderPage < self.numpages -1):
@@ -267,7 +269,7 @@ class Pdf_Widget(QtWidgets.QMainWindow):
         return super(Pdf_Widget, self).resizeEvent(event)
 
     def reRender(self):
-        tsize = float(self.width())
+        # tsize = float(self.width())
         """
         change_size = abs((self.ui.current_width-tsize)/(1.*tsize))
         if ( change_size > 0.05 and self.rescaleToWidth ):
@@ -280,17 +282,17 @@ class Pdf_Widget(QtWidgets.QMainWindow):
             tscale = self.defaultScale
         else:
             tscale = scalefactor
-        fake_dpi = tscale*self.physicalDpiX()
+        fake_dpi = tscale * self.physicalDpiX()
 
-        worker = threaded.GetAllPage(
-            self.ui.doc, fake_dpi, self.rescaleToWidth)
+        worker = threaded.GetAllPage(self.ui.doc, fake_dpi,
+                                     self.rescaleToWidth)
         self.workingState = -1
         self.threadpool.start(worker)
         worker.signals.finished.connect(self.add_qlabel)
         worker.signals.starting.connect(self.annimateProgressBar)
 
     def annimateProgressBar(self, page):
-        self.ui.pbar.setValue(page+1)
+        self.ui.pbar.setValue(page + 1)
 
     def closeEvent(self, *args, **kwargs):
         self._closing = True
@@ -309,25 +311,3 @@ class Pdf_Widget(QtWidgets.QMainWindow):
         if xlayout is not None:
             QtWidgets.QWidget().setLayout(xlayout)
         self.ui.thumbWidget.setLayout(tlabel)
-
-
-usage = "Usage: darshak.py <filename>"
-
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
-    app.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
-    # use highdpi icons
-    app.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
-    if len(sys.argv) > 1:
-        filename = sys.argv[1]
-    else:
-        # Ask for filename or open a file choser
-        #
-        print(usage)
-        filename = QtWidgets.QFileDialog.getOpenFileName(
-            None, "Open PDF", "", "PDF files (*.pdf)")[0]
-        print(filename)
-    w = Pdf_Widget(filename)
-    w.show()
-    sys.exit(app.exec_())
