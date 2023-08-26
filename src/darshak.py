@@ -7,7 +7,6 @@ import threadedRender as threaded
 
 
 class Ui_MainWindow(object):
-
     def __init__(self, filename, parent=None):
         self.filename = filename
 
@@ -65,8 +64,8 @@ class Ui_MainWindow(object):
         self.splitter.addWidget(self.mainPdfWidget)  # self.area)
         self.fullLayout.addWidget(self.splitter)
         self.splitter.setSizes(
-            [self.splitter.height() * 0.05,
-             self.splitter.height() * 0.95])
+            [self.splitter.height() * 0.05, self.splitter.height() * 0.95]
+        )
         self.splitter.setStyleSheet("QSplitter::handle { image: none; }")
         MainWindow.setCentralWidget(self.centralwidget)
         """
@@ -109,15 +108,22 @@ class Pdf_Widget(QtWidgets.QMainWindow):
         self.renderFirstpapge()
 
         combo = QtWidgets.QComboBox()
-        combo.addItem('Fit Width')
-        combo.addItem('Zoom 50%')
-        combo.addItem('Zoom 100%')
-        combo.addItem('Zoom 150%')
-        combo.addItem('Zoom 200%')
-        combo.addItem('Zoom 400%')
-        combo.addItem('Zoom 800%')
+        combo.addItem("Fit Width")
+        combo.addItem("Zoom 50%")
+        combo.addItem("Zoom 100%")
+        combo.addItem("Zoom 150%")
+        combo.addItem("Zoom 200%")
+        combo.addItem("Zoom 400%")
+        combo.addItem("Zoom 800%")
         combo.currentIndexChanged.connect(self.changeZoom)
-        thumbButton = QtWidgets.QPushButton('Thumbnails')
+        # Add annotation Bottom
+        annotButtom = QtWidgets.QPushButton("Annotations")
+        annotButtom.setCheckable(True)
+        annotButtom.clicked.connect(self.show_annotations)
+        self.ui.controlLayout.addWidget(annotButtom)
+        #
+        #
+        thumbButton = QtWidgets.QPushButton("Thumbnails")
         thumbButton.setCheckable(True)
         thumbButton.clicked.connect(self.showHideThumb)
         self.statusPageNo = QtWidgets.QLineEdit()
@@ -130,7 +136,8 @@ class Pdf_Widget(QtWidgets.QMainWindow):
         self.ui.controlLayout.addStretch(1)
         self.ui.controlLayout.addWidget(self.statusPageNo, 1)
         self.ui.controlLayout.addWidget(
-            QtWidgets.QLabel(" / {}".format(self.numpages)), 1)
+            QtWidgets.QLabel(" / {}".format(self.numpages)), 1
+        )
         self.ui.controlLayout.addStretch(1)
         self.ui.controlLayout.addWidget(combo)
         self.getthumbnails()
@@ -144,7 +151,8 @@ class Pdf_Widget(QtWidgets.QMainWindow):
             gopage = int(self.statusPageNo.text()) - 1  # Added 1 earlier
             loc = self.ui.pdfwidget.height() * gopage / self.numpages
             self.sliderBar2.setValue(loc)
-        except:
+        except Exception as e:
+            print(e)
             print("Unable to go to page : \n Please eneter correct page ")
 
     def showHideThumb(self):
@@ -152,18 +160,25 @@ class Pdf_Widget(QtWidgets.QMainWindow):
         hide_me.setHidden(not hide_me.isHidden())
 
     def thubmClick(self, pos):
-        print((self.sliderBar1.maximum(), 1. * self.sliderBar2.maximum()))
-        factor = self.ui.pdfwidget.height() / (1. *
-                                               self.ui.thumbWidget.height())
+        print((self.sliderBar1.maximum(), 1.0 * self.sliderBar2.maximum()))
+        factor = 1.0
+        #  self.ui.pdfwidget.height() /(1.0 * self.ui.thumbWidget.height())
         self.sliderBar2.setValue(pos.y() * factor)
 
     def SyncScroll(self):
         # sliderValue = self.sliderBar2.value()
-        if (self.sliderBar2.maximum() == 0):
+        if self.sliderBar2.maximum() == 0:
             curpage = 1
         else:
-            curpage = int(self.numpages * (self.sliderBar2.value()) /
-                          self.sliderBar2.maximum() - 0.1) + 1
+            curpage = (
+                int(
+                    self.numpages
+                    * (self.sliderBar2.value())
+                    / self.sliderBar2.maximum()
+                    - 0.1
+                )
+                + 1
+            )
         self.statusPageNo.setText("{}".format(curpage))
         # self.sliderBar1.setValue(sliderValue)
 
@@ -191,13 +206,13 @@ class Pdf_Widget(QtWidgets.QMainWindow):
             self.renderFirstpapge(1.5)
         if index == 4:
             self.rescaleToWidth = False
-            self.renderFirstpapge(2.)
+            self.renderFirstpapge(2.0)
         if index == 5:
             self.rescaleToWidth = False
-            self.renderFirstpapge(4.)
+            self.renderFirstpapge(4.0)
         if index == 6:
             self.rescaleToWidth = False
-            self.renderFirstpapge(8.)
+            self.renderFirstpapge(8.0)
 
     """
     def wheelEvent(self, event):
@@ -205,7 +220,8 @@ class Pdf_Widget(QtWidgets.QMainWindow):
             self.renderPage=self.renderPage+1
             sizeObject = QtWidgets.QDesktopWidget().screenGeometry(-1)
             fake_dpi=self.scalefactor*self.physicalDpiX()*self.width()/sizeObject.width()
-            worker =threaded.getImageThread(self.ui.doc,fake_dpi,self.renderPage)
+            worker =threaded.getImageThread(self.ui.doc,fake_dpi,
+            self.renderPage)
             self.threadpool.start( worker )
             worker.signals.finished.connect(self.add_qlabel )
             self.threadpool.waitForDone()
@@ -223,24 +239,24 @@ class Pdf_Widget(QtWidgets.QMainWindow):
 
     def contextMenuEvent(self, event):
         contextMenu = QtWidgets.QMenu(self)
-        impMenu = QtWidgets.QMenu('Zoom ', self)
-        zoom_width = QtWidgets.QAction('Fit Width', self, checkable=True)
+        impMenu = QtWidgets.QMenu("Zoom ", self)
+        zoom_width = QtWidgets.QAction("Fit Width", self, checkable=True)
         impMenu.addAction(zoom_width)
-        zoom_50 = QtWidgets.QAction('Zoom 50%', self, checkable=True)
+        zoom_50 = QtWidgets.QAction("Zoom 50%", self, checkable=True)
         impMenu.addAction(zoom_50)
-        zoom_100 = QtWidgets.QAction('Zoom 100%', self, checkable=True)
+        zoom_100 = QtWidgets.QAction("Zoom 100%", self, checkable=True)
         impMenu.addAction(zoom_100)
-        zoom_150 = QtWidgets.QAction('Zoom 150%', self, checkable=True)
+        zoom_150 = QtWidgets.QAction("Zoom 150%", self, checkable=True)
         impMenu.addAction(zoom_150)
-        zoom_200 = QtWidgets.QAction('Zoom 200%', self, checkable=True)
+        zoom_200 = QtWidgets.QAction("Zoom 200%", self, checkable=True)
         impMenu.addAction(zoom_200)
-        zoom_400 = QtWidgets.QAction('Zoom 400%', self, checkable=True)
+        zoom_400 = QtWidgets.QAction("Zoom 400%", self, checkable=True)
         impMenu.addAction(zoom_400)
-        zoom_800 = QtWidgets.QAction('Zoom 800%', self, checkable=True)
+        zoom_800 = QtWidgets.QAction("Zoom 800%", self, checkable=True)
         impMenu.addAction(zoom_800)
 
         contextMenu.addMenu(impMenu)
-        openAct = contextMenu.addAction("Open")
+        # openAct = contextMenu.addAction("Open")
         quitAct = contextMenu.addAction("Quit")
         action = contextMenu.exec_(self.mapToGlobal(event.pos()))
         if action == zoom_50:
@@ -284,8 +300,7 @@ class Pdf_Widget(QtWidgets.QMainWindow):
             tscale = scalefactor
         fake_dpi = tscale * self.physicalDpiX()
 
-        worker = threaded.GetAllPage(self.ui.doc, fake_dpi,
-                                     self.rescaleToWidth)
+        worker = threaded.GetAllPage(self.ui.doc, fake_dpi, self.rescaleToWidth)
         self.workingState = -1
         self.threadpool.start(worker)
         worker.signals.finished.connect(self.add_qlabel)
@@ -311,3 +326,45 @@ class Pdf_Widget(QtWidgets.QMainWindow):
         if xlayout is not None:
             QtWidgets.QWidget().setLayout(xlayout)
         self.ui.thumbWidget.setLayout(tlabel)
+
+    def show_annotations(self):
+        self.w = FloatingButtonWidget()
+        self.w.setGeometry(QtCore.QRect(100, 100, 400, 200))
+        self.w.show()
+
+
+class FloatingButtonWidget(QtWidgets.QWidget):
+    def __init__(self):
+        super(FloatingButtonWidget, self).__init__()
+        # super().__init__(parent)
+        self.paddingLeft = 5
+        self.paddingTop = 5
+        self.controlLayout = QtWidgets.QHBoxLayout()
+        self.controlLayout.setObjectName("controlLayout")
+        self.controlLayout.setContentsMargins(0, 0, 0, 0)
+        self.controlLayout.setSpacing(0)
+        # add buttons
+        self.addButton = QtWidgets.QPushButton()
+        self.addButton.setObjectName("addButton")
+        self.addButton.setText("Add")
+        self.controlLayout.addWidget(self.addButton)
+        self.setLayout(self.controlLayout)
+        self.setObjectName("FloatingButtonWidget")
+        self.setWindowFlags(
+            QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint
+        )
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+        self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.setWindowOpacity(0.5)
+        self.setFixedWidth(30)
+        self.setFixedHeight(30)
+        self.setWindowTitle("FloatingButtonWidget")
+        self.setStyleSheet("background-color: #ffffff;")
+        self.setGeometry(QtWidgets.QApplication.desktop().screen().rect())
+        self.setWindowFlags(
+            QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint
+        )
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+        self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.setWindowOpacity(0.5)
+        self.setFixedWidth(30)

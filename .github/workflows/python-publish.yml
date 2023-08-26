@@ -31,7 +31,12 @@ jobs:
         sudo apt update 
         sudo apt install python3-pyqt5 python3-poppler-qt5 --yes
         python -m pip install --upgrade pip
-        pip install build
+        python3 -m pip install --upgrade build
+        python3 -m build # build 
+        # upload to pip
+        # python3 -m pip install --upgrade twine
+        # python3 -m twine upload --repository testpypi dist/*
+        # pip install build
     - name: Build package
       run: python -m build
     - name: Publish package

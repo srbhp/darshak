@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling","PyQt5","python-poppler-qt5" ]
+build-backend = "hatchling.build"
+[project]
+name = "darshak"
+version = "0.0.1"
+authors = [
+  { name="Saurabh Pradhan", email="pradhanphy@gmail.com" },
+]
+description = "A simple pdf Viewer"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/srbhp/darshakp"
+"Bug Tracker" = "https://github.com/srbhp/darsha/issues"
