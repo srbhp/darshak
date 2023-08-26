@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtWidgets
-from darshak import Pdf_Widget
+from viewer import Pdf_Widget
 import os
 import sys
 
