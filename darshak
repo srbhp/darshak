@@ -1,3 +1,0 @@
-#!/usr/bin/bash
-# choose the correct version
-python3.6 src/darshak "${2}"
