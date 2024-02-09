@@ -27,7 +27,7 @@ jobs:
       run: |
         sudo apt install python3-poppler-qt5 python3-pyqt5
         python -m pip install --upgrade pip
-        pip install flake8 pytest
+        pip install flake8 pytest pyinstaller
         # if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Build package
       run: pyinstaller pyinstaller_build.py -w --noconfirm  --additional-hooks-dir=hooks --hidden-import PyQt5.QtXml --name="darshak"
