@@ -31,8 +31,13 @@ jobs:
         # if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Build package
       run: pyinstaller pyinstaller_build.py -w --noconfirm  --additional-hooks-dir=hooks --hidden-import PyQt5.QtXml --name="darshak"
-    - name: Publish package
-      uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+    # - name: Publish package
+    #   uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+    #   with:
+    #     user: __token__
+    #     password: ${{ secrets.PYPI_API_TOKEN }}
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.3.1
       with:
-        user: __token__
-        password: ${{ secrets.PYPI_API_TOKEN }}
+        path: dist/darshak 
+
