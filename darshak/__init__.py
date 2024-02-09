@@ -1,7 +1,9 @@
 from PyQt5 import QtCore, QtWidgets
-from viewer import Pdf_Widget
 import os
 import sys
+
+# local Package
+from darshak.viewer import Pdf_Widget
 
 usage = "Usage: darshak.py <filename>"
 if __name__ == "__main__":

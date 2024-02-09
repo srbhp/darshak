@@ -2,8 +2,10 @@
 
 from PyQt5 import QtCore, QtWidgets
 import popplerqt5
-from fixedARLabel import ThumbWidget
-import threadedRender as threaded
+
+# local packages
+from darshak.fixedARLabel import ThumbWidget
+import darshak.threadedRender as threaded
 
 
 class Ui_MainWindow(object):
@@ -63,9 +65,9 @@ class Ui_MainWindow(object):
         self.splitter.addWidget(self.thumbArea)
         self.splitter.addWidget(self.mainPdfWidget)  # self.area)
         self.fullLayout.addWidget(self.splitter)
-        self.splitter.setSizes(
-            [self.splitter.height() * 0.05, self.splitter.height() * 0.95]
-        )
+        # self.splitter.setSizes(
+        #     [self.splitter.height() * 0.05, self.splitter.height() * 0.95]
+        # )
         self.splitter.setStyleSheet("QSplitter::handle { image: none; }")
         MainWindow.setCentralWidget(self.centralwidget)
         """

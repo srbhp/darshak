@@ -1,10 +1,14 @@
 from PyQt5 import QtCore, QtWidgets
-from viewer import Pdf_Widget
 import os
 import sys
 
+# local package
+from darshak.viewer import Pdf_Widget
+
 usage = "Usage: darshak <filename>"
-if __name__ == "__main__":
+
+
+def main():
     app = QtWidgets.QApplication(sys.argv)
     os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
     # app.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
@@ -23,3 +27,7 @@ if __name__ == "__main__":
     w = Pdf_Widget(filename)
     w.show()
     sys.exit(app.exec_())
+
+
+if __name__ == "__main__":
+    main()

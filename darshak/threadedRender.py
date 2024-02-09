@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from fixedARLabel import ImageWidget
+from darshak.fixedARLabel import ImageWidget
 
 
 class WorkerSignals(QtCore.QObject):
