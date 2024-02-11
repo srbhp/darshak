@@ -1,7 +1,7 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
-name: Python application
+name: Python application for Windows
 
 on:
   push:
@@ -26,10 +26,17 @@ jobs:
     - name: Install dependencies
       run: |
         choco install python
+        choco install poppler
+        choco install pyqt5
+        choco install git
         #sudo apt install python3-poppler-qt5 python3-pyqt5
         python -m pip install --upgrade pip
-        pip install flake8 pytest pyinstaller
-        pip install -r requirements.txt 
+        pip install flake8 pytest pyinstaller PyQt5
+        git  clone https://github.com/frescobaldi/python-poppler-qt5
+        cd python-poppler-qt5
+        python -m pip install .
+        cd ../
+        # pip install -r requirements.txt 
     - name: Build package
       run: |
         pyinstaller pyinstaller_build.py -w --noconfirm  --additional-hooks-dir=hooks --hidden-import PyQt5.QtXml --name="darshak" --onefile
