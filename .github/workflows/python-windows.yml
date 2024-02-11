@@ -1,0 +1,50 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Python application
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: windows-2019
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.10"
+    - name: Install dependencies
+      run: |
+        choco install python
+        #sudo apt install python3-poppler-qt5 python3-pyqt5
+        python -m pip install --upgrade pip
+        pip install flake8 pytest pyinstaller
+        pip install -r requirements.txt 
+    - name: Build package
+      run: |
+        pyinstaller pyinstaller_build.py -w --noconfirm  --additional-hooks-dir=hooks --hidden-import PyQt5.QtXml --name="darshak" --onefile
+        echo ${{ github.sha }} > Release.txt
+        mv dist/darshak.exe  dist/darshak-windows.exe
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.3.1
+      with:
+        path: dist/darshak.exe 
+    # Build windows image
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      # if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: |
+          Release.txt
+          LICENSE
+          dist/darshak-windows.exe

@@ -1,0 +1,5 @@
+{
+  "image": "mcr.microsoft.com/windows-cssc/python:3.11-windows-ltsc2019",
+  "features": {
+  }
+}
