@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="252pt" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 252 180" height="180pt">
+ <defs/>
+ <g id="Background" inkscape:label="Background" inkscape:groupmode="layer">
+  <path style="stroke-width:1; stroke-linecap:butt; stroke-linejoin:miter; stroke-dasharray:none; stroke:#171615;" d="M 0 0 L 57.9879 0" transform="translate(104.882, 9.93719)"/>
+  <path style="fill:none;stroke-width:14.4; stroke-linecap:butt; stroke-linejoin:miter; stroke-dasharray:none; stroke:#171615;" d="M0 0 L205.6 0 L205.6 165.6 L0 165.6 L0 0 Z" transform="translate(7.2, 7.2)"/>
+  <path style="stroke-width:14.4; stroke-linecap:butt; stroke-linejoin:miter; stroke-dasharray:none; stroke:#171615;" d="M 0 0 L 161.494 0" transform="translate(85.976, 7.2) rotate(90)"/>
+  <path style="stroke-width:14.4; stroke-linecap:butt; stroke-linejoin:miter; stroke-dasharray:none; stroke:#171615;" d="M 0 0 L 73.2745 0" transform="translate(9.81493, 46.8893) rotate(1.07021)"/>
+  <path style="stroke-width:14.4; stroke-linecap:butt; stroke-linejoin:miter; stroke-dasharray:none; stroke:#171615;" d="M 0 0 L 73.2745 0" transform="translate(9.81493, 79.1273) rotate(1.07021)"/>
+  <path style="stroke-width:14.4; stroke-linecap:butt; stroke-linejoin:miter; stroke-dasharray:none; stroke:#171615;" d="M 0 0 L 73.2745 0" transform="translate(9.81493, 112.373) rotate(1.07021)"/>
+  <path style="stroke-width:14.4; stroke-linecap:butt; stroke-linejoin:miter; stroke-dasharray:none; stroke:#171615;" d="M 0 0 L 73.2745 0" transform="translate(9.81493, 140.581) rotate(1.07021)"/>
+ </g>
+</svg>

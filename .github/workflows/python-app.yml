@@ -31,9 +31,9 @@ jobs:
         # if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Build package
       run: |
-        pyinstaller pyinstaller_build.py -w --noconfirm  --additional-hooks-dir=hooks --hidden-import PyQt5.QtXml --name="darshak"
+        pyinstaller pyinstaller_build.py -w --noconfirm  --additional-hooks-dir=hooks --hidden-import PyQt5.QtXml --name="darshak" --onefile
         echo ${{ github.sha }} > Release.txt
-        tar -cvf dist/darshak-linux.tar.gz  dist/darshak/
+        mv dist/darshak  dist/darshak-linux
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.3.1
       with:
@@ -42,9 +42,9 @@ jobs:
       run: cat Release.txt
     - name: Release
       uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
+      # if: startsWith(github.ref, 'refs/tags/')
       with:
         files: |
           Release.txt
           LICENSE
-          dist/darshak-linux.tar.gz
+          dist/darshak-linux

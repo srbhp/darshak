@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets, QtGui
 import popplerqt5
 
 # local packages
@@ -119,13 +119,15 @@ class Pdf_Widget(QtWidgets.QMainWindow):
         combo.addItem("Zoom 800%")
         combo.currentIndexChanged.connect(self.changeZoom)
         # Add annotation Bottom
-        annotButtom = QtWidgets.QPushButton("Annotations")
-        annotButtom.setCheckable(True)
-        annotButtom.clicked.connect(self.show_annotations)
-        self.ui.controlLayout.addWidget(annotButtom)
+        # annotButtom = QtWidgets.QPushButton("Annotations")
+        # annotButtom.setCheckable(True)
+        # annotButtom.clicked.connect(self.show_annotations)
+        # self.ui.controlLayout.addWidget(annotButtom)
         #
         #
-        thumbButton = QtWidgets.QPushButton("Thumbnails")
+        thumbButton = QtWidgets.QPushButton()
+        thumbButton.setIcon(QtGui.QIcon("darshak/icons/thumbnails.svg"))
+
         thumbButton.setCheckable(True)
         thumbButton.clicked.connect(self.showHideThumb)
         self.statusPageNo = QtWidgets.QLineEdit()
@@ -163,9 +165,9 @@ class Pdf_Widget(QtWidgets.QMainWindow):
 
     def thubmClick(self, pos):
         print((self.sliderBar1.maximum(), 1.0 * self.sliderBar2.maximum()))
-        factor = 1.0
+        factor = 1
         #  self.ui.pdfwidget.height() /(1.0 * self.ui.thumbWidget.height())
-        self.sliderBar2.setValue(pos.y() * factor)
+        self.sliderBar2.setValue(int(pos.y() * factor))
 
     def SyncScroll(self):
         # sliderValue = self.sliderBar2.value()
