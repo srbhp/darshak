@@ -31,7 +31,7 @@ jobs:
         choco install git
         #sudo apt install python3-poppler-qt5 python3-pyqt5
         python -m pip install --upgrade pip
-        pip install flake8 pytest pyinstaller PyQt5
+        pip install flake8 pytest pyinstaller 
         git  clone https://github.com/frescobaldi/python-poppler-qt5
         cd python-poppler-qt5
         python -m pip install .
