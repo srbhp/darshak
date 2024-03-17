@@ -15,7 +15,7 @@ permissions:
 jobs:
   build:
 
-    runs-on: macos-11
+    runs-on: macos-13
 
     steps:
     - uses: actions/checkout@v3
@@ -30,7 +30,7 @@ jobs:
         brew install poppler
         # sudo apt install python3-poppler-qt5 python3-pyqt5
         python -m pip install --upgrade pip
-        pip install flake8 pytest pyinstaller 
+        pip install pyinstaller 
         # pip install -r requirements.txt
         # Brew stuff
         export PKG_CONFIG_PATH="/usr/local/opt/poppler-qt5/lib/pkgconfig"
